@@ -119,4 +119,25 @@ public class PrestamoDAO {
 
         return resultado;
     }
+    
+    /**
+     * Ejercicio propuesto: cuenta cuantas veces se ha prestado un libro en
+     * toda su historia (no solo los prestamos activos).
+     */
+    public int contarPrestamosPorLibro(int libroId) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM prestamos WHERE libro_id = ?";
+
+        try (Connection conexion = DriverManager.getConnection(URL, USUARIO, PASSWORD);
+             PreparedStatement statement = conexion.prepareStatement(sql)) {
+
+            statement.setInt(1, libroId);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt(1);
+                }
+                return 0;
+            }
+        }
+    }
 }
